@@ -123,12 +123,12 @@ function loadAchievementData(PLAYER_API_KEY, DIVE_MASTER_ACH_ID) {
                     updateWiki(diveMaster);
                 })
                 .fail(function(data) {
-                    locationTable.insertAdjacentText('afterend', 'Could not load global achievement data.')
+                    locationTable.insertAdjacentHTML('afterend', '<p>Could not load global achievement data.</p>')
                     console.log(data);
                 });
         })
         .fail(function(data) {
-            locationTable.insertAdjacentText('afterend', 'Could not load player achievement data.')
+            locationTable.insertAdjacentHTML('afterend', '<p>Could not load player achievement data.</p>')
             console.log(data);
         });
 }
