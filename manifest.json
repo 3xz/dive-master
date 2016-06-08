@@ -1,0 +1,32 @@
+{
+
+  "manifest_version": 2,
+  "name": "Dive Master Checklist",
+  "version": "1.0",
+ 
+  "description": "Adds a personalized checklist for the Guild Wars 2 Dive Master achievement.",
+  "icons": {
+    "48": "goggles.jpg"
+  },
+
+  "permissions": ["storage"],
+
+  "applications": {
+    "gecko": {
+      "id": "divemasterchecklist@zx3.org",
+      "strict_min_version": "48.0"
+    }
+  },
+
+  "options_ui": {
+    "page": "config.html"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["https://wiki.guildwars2.com/wiki/Dive_Master", "http://wiki.guildwars2.com/wiki/Dive_Master"],
+      "js": ["jquery-2.2.3.min.js", "dive_master_checklist.js"]
+    }
+  ]
+
+}
