@@ -103,6 +103,8 @@ function loadAchievementData(PLAYER_API_KEY, DIVE_MASTER_ACH_ID) {
 
     var diveMaster = {};
 
+    var locationTable = document.getElementsByTagName('table')[1];
+
     $.get('https://api.guildwars2.com/v2/account/achievements?access_token=' + PLAYER_API_KEY)
         .done(function(playerAchievements) {
             var playerDiveMasterAchievement = $.grep(playerAchievements, function(e){ return e.id == DIVE_MASTER_ACH_ID; });
@@ -121,11 +123,13 @@ function loadAchievementData(PLAYER_API_KEY, DIVE_MASTER_ACH_ID) {
                     updateWiki(diveMaster);
                 })
                 .fail(function(data) {
-                    console.log('Could not load global achievement data.', data);
+                    locationTable.insertAdjacentText('afterend', 'Could not load global achievement data.')
+                    console.log(data);
                 });
         })
         .fail(function(data) {
-            console.log('Could not load player achievement data.', data);
+            locationTable.insertAdjacentText('afterend', 'Could not load player achievement data.')
+            console.log(data);
         });
 }
 
