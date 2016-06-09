@@ -1,12 +1,98 @@
+/*
+ * Save a recently-completed dive to local storage
+ */
+
+function saveLocalDive(diveID) {
+    chrome.storage.local.get({localDive: []}, function(res) {
+        var localDive = res.localDive;
+
+        localDive.push(diveID);
+
+        chrome.storage.local.set({
+            localDive: localDive
+        });
+    });
+}
+
+/*
+ * Delete a locally stored dive. 
+ * (Maybe it was the wrong one, or programmatically removed)
+ */
+
+function delLocalDive(diveID) {
+    chrome.storage.local.get({localDive: []}, function(res) {
+        var newDives = [];
+
+        res.localDive.forEach(function(dive) {
+            if (dive != diveID) {
+                newDives.push(dive);
+            }
+        });
+
+        chrome.storage.local.set({
+            localDive: newDives
+        });
+    });
+}
+
+/*
+ * Setup the dive links
+ */
+
+function setDive(e) {
+    var diveInfo = e.target.id;
+    var diveLink = e.target;
+    
+    if (!e.target.id) {
+        diveInfo = e.target.firstChild.id;
+        diveLink = e.target.firstChild;
+    }
+
+    diveInfo = diveInfo.split('-');
+
+    if (diveInfo[0] == 'save') {
+        diveLink.innerHTML = '&#x2713';
+
+        diveLink.setAttribute('title', 'Saved locally. Waiting for API to sync.');
+        diveLink.setAttribute('id', 'unsave-' + diveInfo[1]);
+
+        saveLocalDive(Number(diveInfo[1]));
+    } else if (diveInfo[0] == 'unsave') {
+        diveLink.innerHTML = '-';
+
+        diveLink.setAttribute('id', 'save-' + diveInfo[1]);
+
+        delLocalDive(Number(diveInfo[1]));
+    }
+}
+
 /**
  * Setup checkbox to save newly completed dives to browser storage.
  *
  * @return HTML to put in <th>
  */
 
-function setUnfinishedDive(diveID) {
-    //var diveLink = document.createElement('a');
-    return '';
+function setUnsyncedDive(diveID, completed) {
+    var diveLink  = document.createElement('a');
+    var saveState = 'save';
+
+    if (completed) {
+        saveState = 'unsave';
+
+        diveLink.innerHTML = '&#x2713';
+
+        diveLink.setAttribute('title', 'Saved locally. Waiting for API to sync.');
+    } else {
+        diveLink.textContent = '-';
+    }
+
+    diveLink.setAttribute('data-dive-id', diveID);
+    diveLink.setAttribute('id', saveState + '-' + diveID);
+    diveLink.setAttribute('style', 'cursor: pointer; text-decoration: none');
+
+    document.querySelector('td[data-dive-id="' + diveID + '"]').addEventListener('click', setDive);
+
+    return diveLink.outerHTML;
 }
 
 /**
@@ -52,25 +138,42 @@ function updateWiki(diveMaster) {
     var locationTable = document.getElementsByTagName('table')[1];
     var tableRows     = locationTable.getElementsByTagName('tr');
 
-    for (var i = 0; i < tableRows.length; i++) {
-        // Table headers don't have regions/data attributes
-        if (tableRows[i].getElementsByTagName('th').length >= 1) {
-            continue;
+    chrome.storage.local.get('localDive', function(res) {
+        for (var i = 0; i < tableRows.length; i++) {
+            // Table headers don't have regions/data attributes
+            if (tableRows[i].getElementsByTagName('th').length >= 1) {
+                continue;
+            }
+
+            var currentRegion = tableRows[i].firstChild.dataset.diveRegion;
+            var diveLocation  = tableRows[i].firstChild.dataset.diveLocationId;
+
+            var diveID = diveMaster[currentRegion][diveLocation].id;
+
+            var checklistString = '';
+
+            tableRows[i].firstChild.setAttribute('data-dive-id', diveID);
+
+            if (res.localDive !== undefined) {
+                var localDives = res.localDive; 
+
+                if (localDives.indexOf(diveID) > -1) {
+                    if (diveMaster[currentRegion][diveLocation].completed) {
+                        checklistString = '&#x2713';
+                        delLocalDive(localDives[localDives.indexOf(diveID)]);
+                    } else {
+                        checklistString = setUnsyncedDive(diveID, true);
+                    }
+                } else if (diveMaster[currentRegion][diveLocation].completed) {
+                    checklistString = '&#x2713';
+                } else {
+                    checklistString = setUnsyncedDive(diveID, false);
+                }
+            }
+
+            tableRows[i].firstChild.innerHTML = checklistString;
         }
-
-        var currentRegion = tableRows[i].firstChild.dataset.diveRegion;
-        var diveLocation  = tableRows[i].firstChild.dataset.diveLocationId;
-
-        var checklistString = '';
-
-        if (diveMaster[currentRegion][diveLocation].completed) {
-            checklistString = '&#x2713';
-        } else {
-            checklistString = setUnfinishedDive(diveMaster[currentRegion][diveLocation].id);
-        }
-
-        tableRows[i].firstChild.innerHTML = checklistString;
-    }
+    });
 }
 
 /**
