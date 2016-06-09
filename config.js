@@ -15,4 +15,4 @@ function restoreAPIKey() {
 }
 
 document.addEventListener('DOMContentLoaded', restoreAPIKey);
-document.querySelector("form").addEventListener("submit", saveAPIKey);
+document.querySelector("#api_form").addEventListener("submit", saveAPIKey);

@@ -22,7 +22,7 @@ function modifyWiki() {
     var diveLocation = 1;
 
     // Set table header
-    tableRows[0].innerHTML = '<th>&#x2713;</th>' + tableRows[0].innerHTML;
+    tableRows[0].insertAdjacentHTML('afterbegin', '<th>&#x2713;</th>');
 
     for (var i = 1; i < tableRows.length; i++) {
         var thRow = tableRows[i].getElementsByTagName('th');
@@ -37,7 +37,7 @@ function modifyWiki() {
                 continue;
             }
 
-            tableRows[i].innerHTML = '<td data-dive-region="' + currentRegion + '" data-dive-location-id="' + diveLocation + '"></td>' + tableRows[i].innerHTML;
+            tableRows[i].insertAdjacentHTML('afterbegin', '<td data-dive-region="' + currentRegion + '" data-dive-location-id="' + diveLocation + '"></td>');
 
             diveLocation++;
         }
