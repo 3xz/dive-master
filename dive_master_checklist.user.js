@@ -1,3 +1,74 @@
+// ==UserScript==
+// @name           Dive Master Checklist
+// @namespace      https://github.com/3xz
+// @description    Adds a personalized checklist for the Guild Wars 2 Dive Master achievement.
+// @version        1.3
+// @include        *://wiki.guildwars2.com/wiki/Dive_Master
+// @require        https://raw.githubusercontent.com/3xz/divemaster/master/jquery-2.2.3.min.js
+// ==/UserScript==
+
+/** 
+ * Alternate way to save the API key
+ */
+
+function saveAPIKey(e) {
+    localStorage.setItem('gw2dm_api_key', document.querySelector("#api_key").value);
+}
+
+/** 
+ * Alternate way to restore the API key
+ */
+
+function restoreAPIKey() {
+    var api_key = localStorage.getItem('gw2dm_api_key');
+
+    if (!api_key) {
+        document.querySelector("#api_key").value = '';
+    } else {
+        document.querySelector("#api_key").value = api_key;
+    }
+}
+
+/**
+ * Add a config box on the wiki page to compensate.
+ */
+
+function addFirefoxConfig() {
+    var locationTable = document.getElementsByTagName('table')[1];
+
+    var form = document.createElement('form');
+    var fieldset = document.createElement('fieldset');
+    var legend = document.createElement('legend');
+    var input = document.createElement('input');
+    var button = document.createElement('button');
+
+    form.setAttribute('id', 'api_form');
+
+    legend.textContent = 'Guild Wars 2 API Key';
+
+    input.setAttribute('type', 'text');
+    input.setAttribute('id', 'api_key');
+
+    button.setAttribute('type', 'submit')
+    button.textContent = 'Save';
+
+    fieldset.appendChild(legend);
+    fieldset.appendChild(input);
+    fieldset.appendChild(button);
+
+    form.appendChild(fieldset);
+
+    locationTable.insertAdjacentHTML('afterend', form.innerHTML);
+
+    restoreAPIKey();
+    document.querySelector("#api_form").addEventListener("submit", saveAPIKey);
+}
+
+// Firefox's API to install addons is InstallTrigger. Undefined in Chrome.
+if (typeof(InstallTrigger) !== 'undefined') {
+    addFirefoxConfig();
+}
+
 /**
  * Setup checkbox to save newly completed dives to browser storage.
  *
@@ -79,14 +150,10 @@ function updateWiki(diveMaster) {
  */
 
 function setup() {
-    var PLAYER_API_KEY     = '';
+    var PLAYER_API_KEY     = localStorage.getItem('gw2dm_api_key');
     var DIVE_MASTER_ACH_ID = 335;
 
-    chrome.storage.local.get('api_key', (res) => {
-       PLAYER_API_KEY = res.api_key;
-
-       loadAchievementData(PLAYER_API_KEY, DIVE_MASTER_ACH_ID);
-    });
+    loadAchievementData(PLAYER_API_KEY, DIVE_MASTER_ACH_ID);
 
     modifyWiki();
 }
