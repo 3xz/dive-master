@@ -8,13 +8,11 @@ A browser extension that adds a checklist to the [Dive Master wiki page](http://
 
 The in-game achivement section is super vague and cumbersome to access.
 
-## Where / How / Usage
+## Usage
 
-Check the Releases section.
+Chrome download: [Chrome Web Store](https://chrome.google.com/webstore/detail/dive-master-checklist/dagecimfcegiidjbhgjdbfaankglpaap/related)
 
-For Chrome, download `divemaster.crx` then head to [chrome://extensions/](chrome://extensions/) and drag 'n drop the file back into Chrome.
-
-![Gif walkthrough](http://i.imgur.com/QNaZci7.gif)
+![Gif walkthrough](http://i.imgur.com/X4fiMZ5.gif)
 
 ## Todo
 
