@@ -37,9 +37,7 @@ function modifyWiki() {
                 continue;
             }
 
-            var checklistString = '';
-
-            tableRows[i].innerHTML = '<td data-dive-region="' + currentRegion + '" data-dive-location-id="' + diveLocation + '">' + checklistString + '</td>' + tableRows[i].innerHTML;
+            tableRows[i].innerHTML = '<td data-dive-region="' + currentRegion + '" data-dive-location-id="' + diveLocation + '"></td>' + tableRows[i].innerHTML;
 
             diveLocation++;
         }
