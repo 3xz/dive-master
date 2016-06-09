@@ -58,7 +58,7 @@ function addFirefoxConfig() {
 
     form.appendChild(fieldset);
 
-    locationTable.insertAdjacentHTML('afterend', form.innerHTML);
+    locationTable.insertAdjacentHTML('afterend', form.outerHTML);
 
     restoreAPIKey();
     document.querySelector("#api_form").addEventListener("submit", saveAPIKey);
