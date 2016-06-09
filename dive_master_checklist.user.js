@@ -36,11 +36,11 @@ function restoreAPIKey() {
 function addFirefoxConfig() {
     var locationTable = document.getElementsByTagName('table')[1];
 
-    var form = document.createElement('form');
+    var form     = document.createElement('form');
     var fieldset = document.createElement('fieldset');
-    var legend = document.createElement('legend');
-    var input = document.createElement('input');
-    var button = document.createElement('button');
+    var legend   = document.createElement('legend');
+    var input    = document.createElement('input');
+    var button   = document.createElement('button');
 
     form.setAttribute('id', 'api_form');
 
