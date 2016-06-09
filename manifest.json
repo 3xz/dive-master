@@ -24,7 +24,7 @@
 
   "content_scripts": [
     {
-      "matches": ["https://wiki.guildwars2.com/wiki/Dive_Master", "http://wiki.guildwars2.com/wiki/Dive_Master"],
+      "matches": ["*://wiki.guildwars2.com/wiki/Dive_Master*"],
       "js": ["jquery-2.2.3.min.js", "dive_master_checklist.js"]
     }
   ]
