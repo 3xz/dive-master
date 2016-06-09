@@ -10,7 +10,7 @@ The in-game achivement section is super vague and cumbersome to access.
 
 ## Usage
 
-Chrome download: [Chrome Web Store](https://chrome.google.com/webstore/detail/dive-master-checklist/dagecimfcegiidjbhgjdbfaankglpaap/related)
+Chrome download: [Chrome Web Store](https://chrome.google.com/webstore/detail/dive-master-checklist/dagecimfcegiidjbhgjdbfaankglpaap)
 
 ![Gif walkthrough](http://i.imgur.com/X4fiMZ5.gif)
 
