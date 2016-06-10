@@ -5,7 +5,7 @@ function saveAPIKey(e) {
 }
 
 function restoreAPIKey() {
-    chrome.storage.local.get('api_key', (res) => {
+    chrome.storage.local.get('api_key', function(res) {
         if (res.api_key === undefined) {
             document.querySelector("#api_key").value = '';
         } else {

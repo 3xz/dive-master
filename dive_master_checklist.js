@@ -194,7 +194,7 @@ function setup() {
         }
     });
 
-    chrome.storage.local.get('api_key', (res) => {
+    chrome.storage.local.get('api_key', function(res) {
        PLAYER_API_KEY = res.api_key;
 
        loadAchievementData(PLAYER_API_KEY, DIVE_MASTER_ACH_ID);
