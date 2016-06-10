@@ -138,7 +138,7 @@ function updateWiki(diveMaster) {
     var locationTable = document.getElementsByTagName('table')[1];
     var tableRows     = locationTable.getElementsByTagName('tr');
 
-    chrome.storage.local.get('localDive', function(res) {
+    chrome.storage.local.get({localDive: []}, function(res) {
         for (var i = 0; i < tableRows.length; i++) {
             // Table headers don't have regions/data attributes
             if (tableRows[i].getElementsByTagName('th').length >= 1) {
@@ -158,6 +158,7 @@ function updateWiki(diveMaster) {
                 var localDives = res.localDive; 
 
                 if (localDives.indexOf(diveID) > -1) {
+
                     if (diveMaster[currentRegion][diveLocation].completed) {
                         checklistString = '&#x2713';
                         delLocalDive(localDives[localDives.indexOf(diveID)]);
@@ -184,6 +185,14 @@ function updateWiki(diveMaster) {
 function setup() {
     var PLAYER_API_KEY     = '';
     var DIVE_MASTER_ACH_ID = 335;
+
+    chrome.storage.local.get({localDive: []}, function(res) {
+        if (res.localDive === undefined) {
+            chrome.storage.local.set({
+                localDive: []
+            });
+        }
+    });
 
     chrome.storage.local.get('api_key', (res) => {
        PLAYER_API_KEY = res.api_key;
