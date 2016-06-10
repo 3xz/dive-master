@@ -238,7 +238,7 @@ function loadAchievementData(PLAYER_API_KEY, DIVE_MASTER_ACH_ID) {
                 });
         })
         .fail(function(data) {
-            locationTable.insertAdjacentHTML('afterend', '<p>Could not load player achievement data.</p>')
+            locationTable.insertAdjacentHTML('afterend', '<p>Could not load player achievement data. Make sure the API key set in Options has "progression" set.</p>')
             console.log(data);
         });
 }
